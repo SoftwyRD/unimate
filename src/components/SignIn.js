@@ -1,41 +1,77 @@
 import React from "react";
-import { Formik, Form, Field, ErrorMessage } from "formik";
+import { useDispatch } from "react-redux";
+import { useFormik } from "formik";
 import * as Yup from "yup";
-const SignIn = () => {
-  const SignInSchema = Yup.object().shape({
-    email: Yup.string("Invalid Email").required("The email is required"),
-    password: Yup.string()
-      .required("The password is required"),
-  });
-  return (
-    <div>
-      <h1>Inicia Sesion</h1>
-      <Formik
-        initialValues={{
-          email: "",
-          password: "",
-        }}
-        validationSchema={SignInSchema}
-        onSubmit={(values, { setSubmit }) => {
-          alert(JSON.stringify(values, null, 2));
-          setSubmit(false);
-        }}
-      >
-        {({ isSubmitting }) => (
-          <Form>
-            <Field type="email" name="email" placeholder="Email" />
-            <ErrorMessage name="email" component="div" />
+import { useHistory } from "react-router-dom";
+import { login } from "../redux/authSlice";
 
-            <Field type="password" name="password" placeholder="Password" />
-            <ErrorMessage name="password" component="div" />
-            <button type="submit" disabled={isSubmitting}>
-              Submit
-            </button>
-          </Form>
+const Login = () => {
+  const dispatch = useDispatch();
+  const history = useHistory();
+
+  const formik = useFormik({
+    initialValues: {
+      email: "",
+      password: "",
+    },
+    validationSchema: Yup.object({
+      email: Yup.string()
+        .email("Correo electrónico no válido")
+        .required("Campo requerido"),
+      password: Yup.string().required("Campo requerido"),
+    }),
+    onSubmit: (values, { setSubmitting, setFieldError }) => {
+      dispatch(login(values))
+        .then(() => {
+          setSubmitting(false);
+          history.push("/dashboard");
+        })
+        .catch((error) => {
+          setSubmitting(false);
+          if (error.response.status === 401) {
+            setFieldError("password", "Credenciales inválidas");
+          } else {
+            console.error(error);
+          }
+        });
+    },
+  });
+
+  return (
+    <form onSubmit={formik.handleSubmit}>
+      <div>
+        <label htmlFor="email">Correo Electrónico</label>
+        <input
+          type="email"
+          name="email"
+          id="email"
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          value={formik.values.email}
+        />
+        {formik.touched.email && formik.errors.email && (
+          <div>{formik.errors.email}</div>
         )}
-      </Formik>
-    </div>
+      </div>
+      <div>
+        <label htmlFor="password">Contraseña</label>
+        <input
+          type="password"
+          name="password"
+          id="password"
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          value={formik.values.password}
+        />
+        {formik.touched.password && formik.errors.password && (
+          <div>{formik.errors.password}</div>
+        )}
+      </div>
+      <button type="submit" disabled={formik.isSubmitting}>
+        Iniciar sesión
+      </button>
+    </form>
   );
 };
 
-export default SignIn;
+export default Login;
