@@ -11,7 +11,7 @@ const SignInSignUp = () => {
 
     return (
         <div>
-            <button onClick={handleOnClick}>{isLogin ? "Login" : "Register"}</button>
+            <button onClick={handleOnClick}>{isLogin ? "Sign Up" : "Sign In"}</button>
             {isLogin ? <SignIn /> : <SignUp />} 
         </div>
     );

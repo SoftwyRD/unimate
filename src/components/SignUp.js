@@ -1,42 +1,77 @@
 import React from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
+import axios from "axios";
 const SignUp = () => {
   const SignUpSchema = Yup.object().shape({
-    name: Yup.string().required("The name is required!"),
+    first_name: Yup.string().required("The name is required!"),
+    middle_name: Yup.string(),
+    last_name: Yup.string().required("Last name is required"),
+    username: Yup.string().required("The username is required"),
     email: Yup.string("Invalid Email").required("The email is required"),
-    password: Yup
-      .string()
+    password: Yup.string()
       .min(8, "The password is too short!")
-      .max(15, "The password is too long")
       .required("The password is required"),
+
+    confirm_password: Yup.string().oneOf(
+      [Yup.ref("password"), null],
+      "Passwords must match"
+    ),
   });
+
+  const handleSubmit = async (values) => {
+    try {
+      await axios.post("https://calendar.softwy.com/api/users/", values);
+      alert("Sign up successful!");
+    } catch (error) {
+      alert("Error signing up !");
+    }
+  };
   return (
     <div>
-      <h1>Registrarse</h1>
+      <h1>Sign Up</h1>
       <Formik
         initialValues={{
-          name: "",
+          first_name: "",
+          middle_name: "",
+          last_name: "",
+          username: "",
           email: "",
           password: "",
+          confirm_password: "",
         }}
         validationSchema={SignUpSchema}
-        onSubmit={(values, { setSubmit }) => {
-          alert(JSON.stringify(values, null, 2));
-          setSubmit(false);
-        }}
+        onSubmit={handleSubmit}
       >
         {({ isSubmitting }) => (
           <Form>
-            <Field type="text" name="name" placeholder="Name" />
-            <ErrorMessage name="name" component="div" />
+            <Field type="text" name="first_name" placeholder="Name" />
+            <ErrorMessage name="first_name" component="div" />
+
+            <Field type="text" name="middle_name" placeholder="Middle Name" />
+            <ErrorMessage name="middle_name" component="div" />
+
+            <Field type="text" name="last_name" placeholder="Last Name" />
+            <ErrorMessage name="last_name" component="div" />
+
+            <Field type="text" name="username" placeholder="Username" />
+            <ErrorMessage name="username" component="div" />
+
             <Field type="email" name="email" placeholder="Email" />
             <ErrorMessage name="email" component="div" />
 
             <Field type="password" name="password" placeholder="Password" />
             <ErrorMessage name="password" component="div" />
+
+            <Field
+              type="password"
+              name="confirm_password"
+              placeholder="Confirm the password"
+            />
+            <ErrorMessage name="confirm_password" component="div" />
+
             <button type="submit" disabled={isSubmitting}>
-              Submit
+              Sign Up
             </button>
           </Form>
         )}
