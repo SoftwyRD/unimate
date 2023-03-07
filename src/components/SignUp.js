@@ -45,30 +45,39 @@ const SignUp = () => {
       >
         {({ isSubmitting }) => (
           <Form>
-            <Field type="text" name="first_name" placeholder="Name" />
-            <ErrorMessage name="first_name" component="div" />
+            <div>
+              <Field type="text" name="first_name" placeholder="Name" />
+              <ErrorMessage name="first_name" component="div" />
+            </div>
 
-            <Field type="text" name="middle_name" placeholder="Middle Name" />
-            <ErrorMessage name="middle_name" component="div" />
-
-            <Field type="text" name="last_name" placeholder="Last Name" />
-            <ErrorMessage name="last_name" component="div" />
-
-            <Field type="text" name="username" placeholder="Username" />
-            <ErrorMessage name="username" component="div" />
-
-            <Field type="email" name="email" placeholder="Email" />
-            <ErrorMessage name="email" component="div" />
-
-            <Field type="password" name="password" placeholder="Password" />
-            <ErrorMessage name="password" component="div" />
-
-            <Field
-              type="password"
-              name="confirm_password"
-              placeholder="Confirm the password"
-            />
-            <ErrorMessage name="confirm_password" component="div" />
+            <div>
+              <Field type="text" name="middle_name" placeholder="Middle Name" />
+              <ErrorMessage name="middle_name" component="div" />
+            </div>
+            <div>
+              <Field type="text" name="last_name" placeholder="Last Name" />
+              <ErrorMessage name="last_name" component="div" />
+            </div>
+            <div>
+              <Field type="text" name="username" placeholder="Username" />
+              <ErrorMessage name="username" component="div" />
+            </div>
+            <div>
+              <Field type="email" name="email" placeholder="Email" />
+              <ErrorMessage name="email" component="div" />
+            </div>
+            <div>
+              <Field type="password" name="password" placeholder="Password" />
+              <ErrorMessage name="password" component="div" />
+            </div>
+            <div>
+              <Field
+                type="password"
+                name="confirm_password"
+                placeholder="Confirm the password"
+              />
+              <ErrorMessage name="confirm_password" component="div" />
+            </div>
 
             <button type="submit" disabled={isSubmitting}>
               Sign Up

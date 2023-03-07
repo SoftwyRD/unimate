@@ -2,21 +2,17 @@ import React from "react";
 import { useDispatch } from "react-redux";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { useHistory } from "react-router-dom";
-import { login } from "../redux/authSlice";
-
+import { login } from "../store/authSlice";
 const Login = () => {
   const dispatch = useDispatch();
-  const history = useHistory();
 
   const formik = useFormik({
     initialValues: {
-      email: "",
+      username: "",
       password: "",
     },
     validationSchema: Yup.object({
-      email: Yup.string()
-        .email("Correo electrónico no válido")
+      username: Yup.string()
         .required("Campo requerido"),
       password: Yup.string().required("Campo requerido"),
     }),
@@ -24,7 +20,6 @@ const Login = () => {
       dispatch(login(values))
         .then(() => {
           setSubmitting(false);
-          history.push("/dashboard");
         })
         .catch((error) => {
           setSubmitting(false);
@@ -40,17 +35,17 @@ const Login = () => {
   return (
     <form onSubmit={formik.handleSubmit}>
       <div>
-        <label htmlFor="email">Correo Electrónico</label>
+        <label htmlFor="username">Username</label>
         <input
-          type="email"
-          name="email"
-          id="email"
+          type="text"
+          name="username"
+          id="username"
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
-          value={formik.values.email}
+          value={formik.values.username}
         />
-        {formik.touched.email && formik.errors.email && (
-          <div>{formik.errors.email}</div>
+        {formik.touched.username && formik.errors.username && (
+          <div>{formik.errors.username}</div>
         )}
       </div>
       <div>
@@ -70,6 +65,8 @@ const Login = () => {
       <button type="submit" disabled={formik.isSubmitting}>
         Iniciar sesión
       </button>
+
+      <h1>{dispatch}</h1>
     </form>
   );
 };
