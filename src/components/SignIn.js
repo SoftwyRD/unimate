@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
@@ -8,7 +8,11 @@ import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import Box from "@material-ui/core/Box";
-
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+import { IconButton, InputAdornment } from "@material-ui/core";
+import { Typography } from "@mui/material";
+import { Link } from "react-router-dom";
 const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
@@ -49,6 +53,7 @@ const useStyles = makeStyles((theme) => ({
   submitButton: {
     width: "50%",
     backgroundColor: "#1976d2",
+    marginTop: "20px",
     color: "#fff",
     fontSize: "16px",
     fontWeight: 500,
@@ -64,13 +69,25 @@ const useStyles = makeStyles((theme) => ({
       cursor: "not-allowed",
     },
   },
+  forgotPassword: {
+    fontSize: "16px",
+    textAlign: "center",
+    textDecoration: "underline",
+    color: "#C4C4C4.",
+    cursor: "pointer",
+    marginTop: "16px",
+  },
 }));
 
 const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const classes = useStyles();
+  const [showPassword, setShowPassword] = useState(false);
 
+  const handleTogglePassword = () => {
+    setShowPassword(!showPassword);
+  };
   const formik = useFormik({
     initialValues: {
       username: "",
@@ -126,7 +143,7 @@ const Login = () => {
         variant="outlined"
         size="small"
         className={classes.input}
-        type="password"
+        type={showPassword ? "text" : "password"}
         value={formik.values.password}
         onChange={formik.handleChange}
         onBlur={formik.handleBlur}
@@ -136,12 +153,23 @@ const Login = () => {
           style: {
             borderRadius: "10px",
           },
+          endAdornment: (
+            <InputAdornment position="end">
+              <IconButton onClick={handleTogglePassword}>
+                {showPassword ? <VisibilityIcon /> : <VisibilityOffIcon />}
+              </IconButton>
+            </InputAdornment>
+          ),
         }}
       />
       {formik.errors.general && (
         <Box className={classes.error}>{formik.errors.general}</Box>
       )}
-      
+      <Typography align="center" variant="subtitle2">
+        <Link to="/forgot-password" className={classes.forgotPassword}>
+          Forgot password?
+        </Link>
+      </Typography>
       <Button
         type="submit"
         className={classes.submitButton}

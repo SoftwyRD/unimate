@@ -8,13 +8,13 @@ const Container = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin-top: 8rem;
+  margin-top: 2rem;
 `;
 
 const Button = styled.button`
   text-transform: uppercase;
   padding: 0.5rem 1.5rem;
-  font-size: 1.2rem;
+  font-size: 1rem;
   font-weight: bold;
   color: black;
   background-color: transparent;
