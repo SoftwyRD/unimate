@@ -33,7 +33,7 @@ export const { loginSuccess, logoutSuccess } = authSlice.actions;
 // async action creator to handle login
 export const login = (credentials) => async (dispatch) => {
   try {
-    const response = await axios.post(`${API_BASE_URL}`, credentials);
+    const response = await axios.post(`${API_BASE_URL}users/login/`, credentials);
     const {data: {data : { tokens:  {access, refresh }}}} = response;
     console.log(access)
     console.log(refresh)

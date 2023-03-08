@@ -3,6 +3,8 @@ import { useDispatch } from "react-redux";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { login } from "../store/authSlice";
+import "../../src/styles/SignIn.css";
+
 const Login = () => {
   const dispatch = useDispatch();
 
@@ -12,8 +14,7 @@ const Login = () => {
       password: "",
     },
     validationSchema: Yup.object({
-      username: Yup.string()
-        .required("Campo requerido"),
+      username: Yup.string().required("Campo requerido"),
       password: Yup.string().required("Campo requerido"),
     }),
     onSubmit: (values, { setSubmitting, setFieldError }) => {
@@ -33,7 +34,7 @@ const Login = () => {
   });
 
   return (
-    <form onSubmit={formik.handleSubmit}>
+    <form onSubmit={formik.handleSubmit} className="login-form">
       <div>
         <label htmlFor="username">Username</label>
         <input
@@ -43,6 +44,7 @@ const Login = () => {
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
           value={formik.values.username}
+          placeholder="Ingrese su usuario"
         />
         {formik.touched.username && formik.errors.username && (
           <div>{formik.errors.username}</div>
@@ -57,6 +59,7 @@ const Login = () => {
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
           value={formik.values.password}
+          placeholder="Ingrese su contraseña"
         />
         {formik.touched.password && formik.errors.password && (
           <div>{formik.errors.password}</div>
@@ -65,8 +68,6 @@ const Login = () => {
       <button type="submit" disabled={formik.isSubmitting}>
         Iniciar sesión
       </button>
-
-      <h1>{dispatch}</h1>
     </form>
   );
 };
