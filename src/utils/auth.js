@@ -1,19 +1,18 @@
-const ACCESS_TOKEN_KEY = "access_token";
-const REFRESH_TOKEN_KEY = "refresh_token";
+const ACCESS_TOKEN_KEY = "accessToken";
+const REFRESH_TOKEN_KEY = "refreshToken";
 
 const tokenUtils = {
   getAccessToken: () => localStorage.getItem(ACCESS_TOKEN_KEY),
 
-  getRefreshToken: () =>
-    document.cookie.replace(
-      /(?:(?:^|.*;\s*)refresh_token\s*\=\s*([^;]*).*$)|^.*$/,
-      "$1"
-    ),
+  getRefreshToken: () => {
+    const refreshTokenCookie = document.cookie.split(";").find(c => c.trim().startsWith(REFRESH_TOKEN_KEY));
+    if (!refreshTokenCookie) return null;
+    return refreshTokenCookie.split("=")[1];
+  },
 
   clearTokens: () => {
     localStorage.removeItem(ACCESS_TOKEN_KEY);
-    document.cookie =
-      "refresh_token=; HttpOnly; expires=Thu, 01 Jan 1970 00:00:00 UTC";
+    document.cookie = `${REFRESH_TOKEN_KEY}=; HttpOnly; expires=Thu, 01 Jan 1970 00:00:00 UTC`;
   },
 };
 
