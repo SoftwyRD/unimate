@@ -35,8 +35,6 @@ export const login = (credentials) => async (dispatch) => {
   try {
     const response = await axios.post(`${API_BASE_URL}users/login/`, credentials);
     const {data: {data : { tokens:  {access, refresh }}}} = response;
-    console.log(access)
-    console.log(refresh)
      // set access token in local storage
     localStorage.setItem("accessToken", access);
 

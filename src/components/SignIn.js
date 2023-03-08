@@ -1,5 +1,6 @@
 import React from "react";
 import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { login } from "../store/authSlice";
@@ -7,6 +8,7 @@ import "../../src/styles/SignIn.css";
 
 const Login = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const formik = useFormik({
     initialValues: {
@@ -21,6 +23,7 @@ const Login = () => {
       dispatch(login(values))
         .then(() => {
           setSubmitting(false);
+          navigate("/main");
         })
         .catch((error) => {
           setSubmitting(false);

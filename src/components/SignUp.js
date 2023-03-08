@@ -2,6 +2,7 @@ import React from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
+import "../../src/styles/SignUp.css"
 const SignUp = () => {
   const SignUpSchema = Yup.object().shape({
     first_name: Yup.string().required("The name is required!"),
