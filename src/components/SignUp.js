@@ -2,7 +2,6 @@ import React from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
-import "../../src/styles/SignUp.css"
 const SignUp = () => {
   const SignUpSchema = Yup.object().shape({
     first_name: Yup.string().required("The name is required!"),
@@ -29,8 +28,8 @@ const SignUp = () => {
     }
   };
   return (
-    <div className="form-container">
-      <h1 className="center-text">Sign Up</h1>
+    <div>
+      <h1>Sign Up</h1>
       <Formik
         initialValues={{
           first_name: "",
@@ -45,105 +44,42 @@ const SignUp = () => {
         onSubmit={handleSubmit}
       >
         {({ isSubmitting }) => (
-          <Form className="form">
-            <div className="form-group">
-              <Field
-                type="text"
-                name="first_name"
-                placeholder="Name"
-                className="form-control"
-              />
-              <ErrorMessage
-                name="first_name"
-                component="div"
-                className="error-message"
-              />
+          <Form>
+            <div>
+              <Field type="text" name="first_name" placeholder="Name" />
+              <ErrorMessage name="first_name" component="div" />
             </div>
 
-            <div className="form-group">
-              <Field
-                type="text"
-                name="middle_name"
-                placeholder="Middle Name"
-                className="form-control"
-              />
-              <ErrorMessage
-                name="middle_name"
-                component="div"
-                className="error-message"
-              />
+            <div>
+              <Field type="text" name="middle_name" placeholder="Middle Name" />
+              <ErrorMessage name="middle_name" component="div" />
             </div>
-            <div className="form-group">
-              <Field
-                type="text"
-                name="last_name"
-                placeholder="Last Name"
-                className="form-control"
-              />
-              <ErrorMessage
-                name="last_name"
-                component="div"
-                className="error-message"
-              />
+            <div>
+              <Field type="text" name="last_name" placeholder="Last Name" />
+              <ErrorMessage name="last_name" component="div" />
             </div>
-            <div className="form-group">
-              <Field
-                type="text"
-                name="username"
-                placeholder="Username"
-                className="form-control"
-              />
-              <ErrorMessage
-                name="username"
-                component="div"
-                className="error-message"
-              />
+            <div>
+              <Field type="text" name="username" placeholder="Username" />
+              <ErrorMessage name="username" component="div" />
             </div>
-            <div className="form-group">
-              <Field
-                type="email"
-                name="email"
-                placeholder="Email"
-                className="form-control"
-              />
-              <ErrorMessage
-                name="email"
-                component="div"
-                className="error-message"
-              />
+            <div>
+              <Field type="email" name="email" placeholder="Email" />
+              <ErrorMessage name="email" component="div" />
             </div>
-            <div className="form-group">
-              <Field
-                type="password"
-                name="password"
-                placeholder="Password"
-                className="form-control"
-              />
-              <ErrorMessage
-                name="password"
-                component="div"
-                className="error-message"
-              />
+            <div>
+              <Field type="password" name="password" placeholder="Password" />
+              <ErrorMessage name="password" component="div" />
             </div>
-            <div className="form-group">
+            <div>
               <Field
                 type="password"
                 name="confirm_password"
                 placeholder="Confirm the password"
-                className="form-control"
               />
-              <ErrorMessage
-                name="confirm_password"
-                component="div"
-                className="error-message"
-              />
+              <ErrorMessage name="confirm_password" component="div" />
             </div>
 
-            <button
-              type="submit"
-              disabled={isSubmitting}
-              className="btn btn-primary btn-block"
-            >
+            <button type="submit" disabled={isSubmitting}>
               Sign Up
             </button>
           </Form>
