@@ -1,0 +1,16 @@
+@font-face {
+    font-family: "MADE Tommy Soft";
+    src: url("./MADE Tommy Soft Regular PERSONAL USE.otf") format("opentype");
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+  }
+  
+  @font-face {
+    font-family: "MADE Tommy Soft";
+    src: url("./MADE Tommy Soft Light PERSONAL USE.otf") format("opentype");
+    font-weight: lighter;
+    font-style: normal;
+    font-display: swap;
+  }
+  
