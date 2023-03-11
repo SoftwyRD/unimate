@@ -1,13 +1,22 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  BrowserRouter,
+} from "react-router-dom";
 import { Provider } from "react-redux";
 import store from "./store";
-import SignInSignUp from "./pages/SignInSignUp";
 import MainPage from "./pages/MainPage";
 import { createGlobalStyle } from "styled-components";
+import SignInPage from "./pages/Login_Register/SignInPage";
+import SignUpPage from "./pages/Login_Register/SignUpPage";
+import Layout from "./components/Layout";
 
 const GlobalStyle = createGlobalStyle`
-  ${props => props.useFont && `
+  ${(props) =>
+    props.useFont &&
+    `
     @import url('./fonts.css');
     
     body {
@@ -25,13 +34,25 @@ const GlobalStyle = createGlobalStyle`
 function App() {
   return (
     <Provider store={store}>
-      <GlobalStyle useFont={true}/>
-      <Router>
+      <GlobalStyle useFont={true} />
+      <BrowserRouter>
         <Routes>
-          <Route path="/" element={<SignInSignUp />} />
+          <Route
+            path="/Login"
+            element={
+              <Layout>
+                <SignInPage />
+              </Layout>
+            }
+          />
+          <Route path="/Register" element={
+              <Layout>
+                <SignUpPage />
+              </Layout>
+            } />
           <Route path="/main" element={<MainPage />} />
         </Routes>
-      </Router>
+      </BrowserRouter>
     </Provider>
   );
 }

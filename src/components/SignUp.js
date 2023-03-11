@@ -4,7 +4,7 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
 import { makeStyles } from "@material-ui/core/styles";
-
+import { useNavigate } from "react-router-dom";
 const useStyles = makeStyles({
   signUpContainer: {
     marginTop: "30px",
@@ -19,9 +19,9 @@ const useStyles = makeStyles({
   },
 });
 
-const SignUp = ({ changePage }) => {
+const SignUp = () => {
   const classes = useStyles();
-
+  const navigate = useNavigate();
   const initialValues = {
     first_name: "",
     middle_name: "",
@@ -52,9 +52,7 @@ const SignUp = ({ changePage }) => {
     try {
       await axios.post("https://calendar.softwy.com/api/users/", values);
       alert("Sign up successful!");
-      changePage(() => {
-        return "SignIn";
-      });
+      navigate('/Login')
     } catch (error) {
       alert("Error signing up!");
       setErrors({ submit: "Error submitting form." });
@@ -78,6 +76,7 @@ const SignUp = ({ changePage }) => {
                   <Field
                     type="text"
                     placeholder="First Name"
+                    autoFocus
                     name="first_name"
                     as={TextField}
                     fullWidth

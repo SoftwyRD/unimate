@@ -1,19 +1,52 @@
-const ACCESS_TOKEN_KEY = "accessToken";
-const REFRESH_TOKEN_KEY = "refreshToken";
+import axios from "axios";
+import { updateAccessToken } from "./authSlice";
+import { API_BASE_URL } from "./config";
 
-const tokenUtils = {
-  getAccessToken: () => localStorage.getItem(ACCESS_TOKEN_KEY),
+export const isAuthenticated = async (dispatch) => {
+  const accessToken = localStorage.getItem("accessToken");
+  const refreshToken = getCookie("refreshToken");
 
-  getRefreshToken: () => {
-    const refreshTokenCookie = document.cookie.split(";").find(c => c.trim().startsWith(REFRESH_TOKEN_KEY));
-    if (!refreshTokenCookie) return null;
-    return refreshTokenCookie.split("=")[1];
-  },
+  // Check if access token and refresh token exist
+  if (!accessToken || !refreshToken) {
+    return false;
+  }
 
-  clearTokens: () => {
-    localStorage.removeItem(ACCESS_TOKEN_KEY);
-    document.cookie = `${REFRESH_TOKEN_KEY}=; HttpOnly; expires=Thu, 01 Jan 1970 00:00:00 UTC`;
-  },
+  try {
+    const response = await axios.post(`${API_BASE_URL}/verifyToken`, {
+      access: accessToken,
+    });
+    return true;
+  } catch (error) {
+    console.log(error);
+    if (error.response && error.response.status === 401) {
+      try {
+        const response = await axios.post(`${API_BASE_URL}/refreshToken`, {
+          access: accessToken,
+          refresh: refreshToken,
+        });
+        localStorage.setItem("accessToken", response.data.data.tokens.access);
+        dispatch(updateAccessToken({accessToken: response.data.data.tokens.access}))
+        return true;
+      } catch (error) {
+        console.log(error);
+        return false;
+      }
+    }
+    else { 
+      alert("An error occurred processing the request. Please try again!")
+    }
+    return false;
+  }
 };
 
-export default tokenUtils;
+function getCookie(name) {
+  const value = `; ${document.cookie}`;
+  const encodedName = encodeURIComponent(name);
+  const parts = value.split(`; ${encodedName}=`);
+  if (parts.length === 2) {
+    const encodedValue = parts.pop().split(";").shift();
+    const decodedValue = decodeURIComponent(encodedValue);
+    return decodedValue;
+  }
+  return "";
+}

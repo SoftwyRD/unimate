@@ -11,6 +11,9 @@ const authSlice = createSlice({
     refreshToken: null,
   },
   reducers: {
+    updateAccessToken: (state, action) => {
+      state.accessToken = action.payload.accessToken;
+    },
     loginSuccess: (state, action) => {
       const { access, refresh, user } = action.payload;
       state.isLoggedIn = true;
@@ -33,17 +36,24 @@ export const { loginSuccess, logoutSuccess } = authSlice.actions;
 // async action creator to handle login
 export const login = (credentials) => async (dispatch) => {
   try {
-    const response = await axios.post(`${API_BASE_URL}users/login/`, credentials);
-    const {data: {data : { tokens:  {access, refresh }}}} = response;
-     // set access token in local storage
+    const response = await axios.post(
+      `${API_BASE_URL}users/login/`,
+      credentials
+    );
+    const {
+      data: {
+        data: {
+          tokens: { access, refresh },
+        },
+      },
+    } = response;
+    // set access token in local storage
     localStorage.setItem("accessToken", access);
 
     // set refresh token in http only cookie
     document.cookie = `refreshToken=${refresh}; Secure; HttpOnly; SameSite=Strict`;
 
-    dispatch(loginSuccess( access, refresh, credentials.username ));
-
-    alert("Todo funciono bien !")
+    dispatch(loginSuccess(access, refresh, credentials.username));
   } catch (error) {
     console.log(error);
   }
