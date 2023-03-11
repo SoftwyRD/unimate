@@ -1,31 +1,27 @@
 import React from "react";
 import { Grid, TextField, Button } from "@material-ui/core";
-import styled from "styled-components";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
+import { makeStyles } from "@material-ui/core/styles";
 
-const SignUpContainer = styled(Grid)`
-  padding: 50px;
-`;
+const useStyles = makeStyles({
+  signUpContainer: {
+    marginTop: "30px",
+  },
+  formContainer: {
+    display: "flex",
+    flexDirection: "column",
+  },
+  buttonContainer: {
+    display: "flex",
+    justifyContent: "center",
+  },
+});
 
-const FormContainer = styled(Form)`
-  display: flex;
-  flex-direction: column;
-`;
+const SignUp = ({ changePage }) => {
+  const classes = useStyles();
 
-const ButtonContainer = styled(Grid)`
-  display: flex;
-  justify-content: center;
-`;
-
-const Label = styled.label`
-  font-size: 16px;
-  font-weight: 500;
-`;
-
-const SignUp = ({changePage}) => {
-  // Definir los valores iniciales como objeto y utilizar destructuración
   const initialValues = {
     first_name: "",
     middle_name: "",
@@ -55,14 +51,12 @@ const SignUp = ({changePage}) => {
   const handleSubmit = async (values, { setSubmitting, setErrors }) => {
     try {
       await axios.post("https://calendar.softwy.com/api/users/", values);
-      // Mostrar mensaje de éxito al usuario en la interfaz
       alert("Sign up successful!");
-      changePage(() => { 
-        return "SignIn"
-      })
+      changePage(() => {
+        return "SignIn";
+      });
     } catch (error) {
-      // Mostrar mensaje de error al usuario en la interfaz
-      alert("Error signing up !");
+      alert("Error signing up!");
       setErrors({ submit: "Error submitting form." });
     } finally {
       setSubmitting(false);
@@ -70,20 +64,20 @@ const SignUp = ({changePage}) => {
   };
 
   return (
-    <SignUpContainer container justifyContent="center">
-      <Grid item xs={12} md={8} lg={6}>
+    <Grid container justifyContent="center" className={classes.signUpContainer}>
+      <Grid item xs={12} md={8} lg={7}>
         <Formik
           initialValues={initialValues}
           validationSchema={SignUpSchema}
           onSubmit={handleSubmit}
         >
           {({ isSubmitting }) => (
-            <FormContainer>
+            <Form className={classes.formContainer}>
               <Grid container spacing={2}>
                 <Grid item xs={12} md={6}>
-                  <Label htmlFor="first_name">First Name *</Label>
                   <Field
                     type="text"
+                    placeholder="First Name"
                     name="first_name"
                     as={TextField}
                     fullWidth
@@ -93,10 +87,10 @@ const SignUp = ({changePage}) => {
                   <ErrorMessage name="first_name" component="div" />
                 </Grid>
                 <Grid item xs={12} md={6}>
-                  <Label htmlFor="middle_name">Middle Name</Label>
                   <Field
                     type="text"
                     name="middle_name"
+                    placeholder="Middle Name"
                     as={TextField}
                     fullWidth
                     variant="outlined"
@@ -104,10 +98,10 @@ const SignUp = ({changePage}) => {
                   />
                 </Grid>
                 <Grid item xs={12}>
-                  <Label htmlFor="last_name">Last Name *</Label>
                   <Field
                     type="text"
                     name="last_name"
+                    placeholder="Last Name"
                     as={TextField}
                     fullWidth
                     variant="outlined"
@@ -116,10 +110,10 @@ const SignUp = ({changePage}) => {
                   <ErrorMessage name="last_name" component="div" />
                 </Grid>
                 <Grid item xs={12}>
-                  <Label htmlFor="username">Username *</Label>
                   <Field
                     type="text"
                     name="username"
+                    placeholder="Username"
                     as={TextField}
                     fullWidth
                     variant="outlined"
@@ -128,10 +122,10 @@ const SignUp = ({changePage}) => {
                   <ErrorMessage name="username" component="div" />
                 </Grid>
                 <Grid item xs={12}>
-                  <Label htmlFor="email">Email *</Label>
                   <Field
                     type="email"
                     name="email"
+                    placeholder="Email"
                     as={TextField}
                     fullWidth
                     variant="outlined"
@@ -140,10 +134,10 @@ const SignUp = ({changePage}) => {
                   <ErrorMessage name="email" component="div" />
                 </Grid>
                 <Grid item xs={12}>
-                  <Label htmlFor="password">Password *</Label>
                   <Field
                     type="password"
                     name="password"
+                    placeholder="Password"
                     as={TextField}
                     fullWidth
                     variant="outlined"
@@ -152,10 +146,10 @@ const SignUp = ({changePage}) => {
                   <ErrorMessage name="password" component="div" />
                 </Grid>
                 <Grid item xs={12}>
-                  <Label htmlFor="confirm_password">Confirm Password </Label>
                   <Field
                     type="password"
                     name="confirm_password"
+                    placeholder="Confirm Password"
                     as={TextField}
                     fullWidth
                     variant="outlined"
@@ -163,23 +157,22 @@ const SignUp = ({changePage}) => {
                   />
                   <ErrorMessage name="confirm_password" component="div" />
                 </Grid>
-                <ButtonContainer item xs={12}>
+                <Grid item xs={12} className={classes.buttonContainer}>
                   <Button
+                    type="submit"
                     variant="contained"
                     color="primary"
                     disabled={isSubmitting}
-                    type="submit"
                   >
                     Sign Up
                   </Button>
-                </ButtonContainer>
+                </Grid>
               </Grid>
-            </FormContainer>
+            </Form>
           )}
         </Formik>
       </Grid>
-    </SignUpContainer>
+    </Grid>
   );
 };
-
 export default SignUp;

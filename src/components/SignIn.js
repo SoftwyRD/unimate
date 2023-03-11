@@ -15,6 +15,7 @@ import { Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 import store from "../store/index";
 
+
 const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
@@ -23,7 +24,6 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: "0px",
   },
   form: {
-
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
@@ -89,7 +89,6 @@ const Login = () => {
   const classes = useStyles();
   const [showPassword, setShowPassword] = useState(false);
   const [showError, setShowError] = useState(false);
-  
 
   const handleTogglePassword = () => {
     setShowPassword((prevState) => !prevState);
@@ -109,13 +108,11 @@ const Login = () => {
         await dispatch(login(values));
         setSubmitting(false);
         const authState = store.getState().auth;
-        if (authState.isLoggedIn) 
-          navigate("/main");
+        if (authState.isLoggedIn) navigate("/main");
         else
-          setShowError(() =>  {
-            return true
-          })
-        
+          setShowError(() => {
+            return true;
+          });
       } catch (error) {
         setSubmitting(false);
         console.error(error);
@@ -182,7 +179,13 @@ const Login = () => {
       </Button>
 
       {showError && (
-        <Typography variant="subtitle2" className={classes.error} style={{marginTop:  "20px"}}>
+        <Typography
+          fontFamily="MADE Tommy Soft"
+          fontWeight={500}
+          variant="subtitle2"
+          className={classes.error}
+          style={{ marginTop: "20px" }}
+        >
           Incorrect username or password
         </Typography>
       )}

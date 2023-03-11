@@ -5,19 +5,27 @@ import store from "./store";
 import SignInSignUp from "./pages/SignInSignUp";
 import MainPage from "./pages/MainPage";
 import { createGlobalStyle } from "styled-components";
-function App() {
-  const GlobalStyle = createGlobalStyle`
+
+const GlobalStyle = createGlobalStyle`
+  ${props => props.useFont && `
+    @import url('./fonts.css');
+    
+    body {
+      font-family: 'MADE Tommy Soft', sans-serif;
+    }
+  `}
+  
   body {
     margin: 0;
     padding: 0;
     background: #F2F2F2 0% 0% no-repeat padding-box;
   }
-`; 
-  return (
-    
-    <Provider store={store}>
-        <GlobalStyle/>
+`;
 
+function App() {
+  return (
+    <Provider store={store}>
+      <GlobalStyle useFont={true}/>
       <Router>
         <Routes>
           <Route path="/" element={<SignInSignUp />} />

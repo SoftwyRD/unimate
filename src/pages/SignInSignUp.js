@@ -3,9 +3,9 @@ import SignInPage from "./Login_Register/SignInPage";
 import SignUpPage from "./Login_Register/SignUpPage";
 import { ReactComponent as MySVG } from "../assets/logo.svg";
 import { makeStyles } from "@material-ui/core/styles";
-import { Container, Button, ButtonGroup } from "@material-ui/core";
+import { Container, Button, ButtonGroup, Typography } from "@material-ui/core";
 import { motion } from "framer-motion";
-
+import fonts from "../../src/fonts/fonts.css";
 const useStyles = makeStyles((theme) => ({
   container: {
     display: "flex",
@@ -32,6 +32,7 @@ const useStyles = makeStyles((theme) => ({
   },
   buttonContainer: {
     textAlign: "center",
+    
   },
 }));
 
@@ -63,8 +64,8 @@ const SignInSignUp = () => {
         className={classes.buttonContainer}
         disableElevation
         component={motion.div}
-        initial={{opacity: 1, y: -50 }}
-        animate={{opacity: 1,  y: 0 }}
+        initial={{ opacity: 1, y: -50 }}
+        animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: 50 }}
         transition={{ duration: 0.5 }}
       >
