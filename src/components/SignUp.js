@@ -24,7 +24,7 @@ const Label = styled.label`
   font-weight: 500;
 `;
 
-const SignUp = () => {
+const SignUp = ({changePage}) => {
   // Definir los valores iniciales como objeto y utilizar destructuración
   const initialValues = {
     first_name: "",
@@ -57,6 +57,9 @@ const SignUp = () => {
       await axios.post("https://calendar.softwy.com/api/users/", values);
       // Mostrar mensaje de éxito al usuario en la interfaz
       alert("Sign up successful!");
+      changePage(() => { 
+        return "SignIn"
+      })
     } catch (error) {
       // Mostrar mensaje de error al usuario en la interfaz
       alert("Error signing up !");

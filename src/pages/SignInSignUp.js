@@ -2,13 +2,14 @@ import React, { useState } from "react";
 import SignInPage from "./Login_Register/SignInPage";
 import SignUpPage from "./Login_Register/SignUpPage";
 import styled from "styled-components";
-
+import { ReactComponent as MySVG } from "../assets/logo.svg";
+import { motion } from "framer-motion";
 const Container = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
+  width: 100%;
   align-items: center;
-  margin-top: 2rem;
 `;
 
 const Button = styled.button`
@@ -33,6 +34,13 @@ const SignInSignUp = () => {
 
   return (
     <Container>
+      <MySVG
+        style={{
+          width: "250px",
+          height: "200px",
+          margin: "2rem",
+        }}
+      />
       <div style={{ textAlign: "center" }}>
         <Button
           selected={activePage === "SignIn"}
@@ -50,7 +58,19 @@ const SignInSignUp = () => {
           Register
         </Button>
       </div>
-      {activePage === "SignIn" ? <SignInPage /> : <SignUpPage />}
+      <motion.div
+        key={activePage}
+        initial={{ opacity: 0, y: 0 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: 50 }}
+        transition={{ duration: 0.5}}
+      >
+        {activePage === "SignIn" ? (
+          <SignInPage />
+        ) : (
+          <SignUpPage changePage={setActivePage} />
+        )}
+      </motion.div>
     </Container>
   );
 };

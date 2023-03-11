@@ -13,6 +13,8 @@ import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { IconButton, InputAdornment } from "@material-ui/core";
 import { Typography } from "@mui/material";
 import { Link } from "react-router-dom";
+import store from "../store/index";
+
 const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
@@ -21,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: "0px",
   },
   form: {
-    width: "40%",
+
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
@@ -34,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
     textAlign: "left",
   },
   input: {
-    width: "100%",
+    width: "150%",
     padding: "10px",
     marginBottom: "16px",
     fontSize: "20px",
@@ -48,17 +50,19 @@ const useStyles = makeStyles((theme) => ({
     color: "red",
     fontSize: "12px",
     textAlign: "left",
-    marginBottom: "16px",
+    margin: "20px",
   },
   submitButton: {
     width: "50%",
-    backgroundColor: "#1976d2",
+    backgroundColor: "#535AE5",
+    boxShadow: "0px 3px 6px #00000059",
+    background: "#535AE5 0% 0% no-repeat padding-box",
     marginTop: "20px",
     color: "#fff",
     fontSize: "16px",
     fontWeight: 500,
     padding: "12px 24px",
-    borderRadius: "4px",
+    borderRadius: "20px",
     border: "none",
     cursor: "pointer",
     "&:hover": {
@@ -73,7 +77,7 @@ const useStyles = makeStyles((theme) => ({
     fontSize: "16px",
     textAlign: "center",
     textDecoration: "underline",
-    color: "#C4C4C4.",
+    color: "#C4C4C4",
     cursor: "pointer",
     marginTop: "16px",
   },
@@ -84,33 +88,38 @@ const Login = () => {
   const navigate = useNavigate();
   const classes = useStyles();
   const [showPassword, setShowPassword] = useState(false);
+  const [showError, setShowError] = useState(false);
+  
 
   const handleTogglePassword = () => {
-    setShowPassword(!showPassword);
+    setShowPassword((prevState) => !prevState);
   };
+
   const formik = useFormik({
     initialValues: {
       username: "",
       password: "",
     },
     validationSchema: Yup.object({
-      username: Yup.string().required("Field required"),
-      password: Yup.string().required("Field required"),
+      username: Yup.string().required("Username is required"),
+      password: Yup.string().required("Password is required"),
     }),
-    onSubmit: (values, { setSubmitting, setFieldError }) => {
-      dispatch(login(values))
-        .then(() => {
-          setSubmitting(false);
+    onSubmit: async (values, { setSubmitting, setErrors }) => {
+      try {
+        await dispatch(login(values));
+        setSubmitting(false);
+        const authState = store.getState().auth;
+        if (authState.isLoggedIn) 
           navigate("/main");
-        })
-        .catch((error) => {
-          setSubmitting(false);
-          if (error.response.status === 401) {
-            setFieldError("password", "Invalid credentials");
-          } else {
-            console.error(error);
-          }
-        });
+        else
+          setShowError(() =>  {
+            return true
+          })
+        
+      } catch (error) {
+        setSubmitting(false);
+        console.error(error);
+      }
     },
   });
 
@@ -131,7 +140,7 @@ const Login = () => {
         helperText={formik.touched.username && formik.errors.username}
         InputProps={{
           style: {
-            borderRadius: "10px",
+            borderRadius: "20px",
           },
         }}
       />
@@ -151,7 +160,7 @@ const Login = () => {
         helperText={formik.touched.password && formik.errors.password}
         InputProps={{
           style: {
-            borderRadius: "10px",
+            borderRadius: "20px",
           },
           endAdornment: (
             <InputAdornment position="end">
@@ -162,21 +171,27 @@ const Login = () => {
           ),
         }}
       />
-      {formik.errors.general && (
-        <Box className={classes.error}>{formik.errors.general}</Box>
-      )}
-      <Typography align="center" variant="subtitle2">
-        <Link to="/forgot-password" className={classes.forgotPassword}>
-          Forgot password?
-        </Link>
-      </Typography>
       <Button
         type="submit"
+        variant="contained"
+        color="primary"
         className={classes.submitButton}
         disabled={formik.isSubmitting}
       >
-        Sign In
+        Login
       </Button>
+
+      {showError && (
+        <Typography variant="subtitle2" className={classes.error} style={{marginTop:  "20px"}}>
+          Incorrect username or password
+        </Typography>
+      )}
+
+      <Box mt={2} style={{ marginTop: "20px" }}>
+        <Link to="/forgot-password" className={classes.forgotPassword}>
+          Forgot password?
+        </Link>
+      </Box>
     </form>
   );
 };
