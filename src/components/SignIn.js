@@ -10,7 +10,7 @@ import Button from "@material-ui/core/Button";
 import Box from "@material-ui/core/Box";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
-import { IconButton, InputAdornment } from "@material-ui/core";
+import { CircularProgress, IconButton, InputAdornment } from "@material-ui/core";
 import { Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 import store from "../store/index";
@@ -89,7 +89,7 @@ const Login = () => {
   const classes = useStyles();
   const [showPassword, setShowPassword] = useState(false);
   const [showError, setShowError] = useState(false);
-
+  const [isLoading, setIsLoading] = useState(false);
   const handleTogglePassword = () => {
     setShowPassword((prevState) => !prevState);
   };
@@ -104,11 +104,14 @@ const Login = () => {
       password: Yup.string().required("Password is required"),
     }),
     onSubmit: async (values, { setSubmitting, setErrors }) => {
+      setIsLoading(true)
       try {
         await dispatch(login(values));
         setSubmitting(false);
         const authState = store.getState().auth;
-        if (authState.isLoggedIn) navigate("/main");
+        if (authState.isLoggedIn) { 
+          navigate("/main"); 
+        } 
         else
           setShowError(() => {
             return true;
@@ -116,6 +119,8 @@ const Login = () => {
       } catch (error) {
         setSubmitting(false);
         console.error(error);
+      } finally { 
+        setIsLoading(false)
       }
     },
   });
@@ -173,11 +178,13 @@ const Login = () => {
         variant="contained"
         color="primary"
         className={classes.submitButton}
-        disabled={formik.isSubmitting}
+        disabled={isLoading}
+        
       >
-        Login
+         {isLoading ? <CircularProgress size={24} /> : "Login" }
       </Button>
 
+        
       {showError && (
         <Typography
           fontFamily="MADE Tommy Soft"
@@ -190,6 +197,7 @@ const Login = () => {
         </Typography>
       )}
 
+        
       <Box mt={2} style={{ marginTop: "20px" }}>
         <Link to="/forgot-password" className={classes.forgotPassword}>
           Forgot password?

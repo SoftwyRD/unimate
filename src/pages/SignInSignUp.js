@@ -3,7 +3,7 @@ import SignInPage from "./Login_Register/SignInPage";
 import SignUpPage from "./Login_Register/SignUpPage";
 import { ReactComponent as MySVG } from "../assets/logo.svg";
 import { makeStyles } from "@material-ui/core/styles";
-import { Container, Button, ButtonGroup, Typography } from "@material-ui/core";
+import { Container, Button, ButtonGroup } from "@material-ui/core";
 import { motion } from "framer-motion";
 import fonts from "../../src/fonts/fonts.css";
 const useStyles = makeStyles((theme) => ({
@@ -22,8 +22,9 @@ const useStyles = makeStyles((theme) => ({
   button: {
     textTransform: "uppercase",
     padding: "0.5rem 1.5rem",
-    fontSize: "1rem",
-    fontWeight: "bold",
+    fontFamily: "'MADE Tommy Soft', sans-serif",
+    font: 'normal normal normal 20px MADE Tommy Soft',
+    letterSpacing: "0.35px",
     color: "black",
     border: "none",
   },
@@ -74,11 +75,13 @@ const SignInSignUp = () => {
             activePage === "SignIn" && classes.selected
           }`}
           onClick={(e) => handlePageChange(e, "SignIn")}
+          
         >
           <motion.span
             className={classes.line}
             variants={lineVariants}
             initial="hidden"
+            style={{ fontFamily: "MADE Tommy Soft', sans-serif" }}
             animate={activePage === "SignIn" ? "visible" : "hidden"}
             transition={{ duration: 0.5 }}
           />
