@@ -36,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
     textAlign: "left",
   },
   input: {
-    width: "150%",
+    width: "100%",
     padding: "10px",
     marginBottom: "16px",
     fontSize: "20px",
