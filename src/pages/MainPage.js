@@ -6,7 +6,6 @@ import { logout } from "../store/authSlice";
 const MainPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
   const handleLogout = () => {
     dispatch(logout())
       .then(() => {
@@ -21,6 +20,8 @@ const MainPage = () => {
     <div>
       <h1 style={{textAlign: "center"}}>Pagina Principal</h1>
       <button onClick={handleLogout}>Cerrar sesión</button>
+      <button onClick={() => navigate('/Testing')}>Testing</button>
+     
     </div>
   );
 };

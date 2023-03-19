@@ -25,7 +25,6 @@ const authSlice = createSlice({
       state.isLoggedIn = false;
       state.user = null;
       state.accessToken = null;
-      // remove the refresh token when logging out
       state.refreshToken = null;
     },
   },
@@ -37,7 +36,7 @@ export const { loginSuccess, logoutSuccess } = authSlice.actions;
 export const login = (credentials) => async (dispatch) => {
   try {
     const response = await axios.post(
-      `${API_BASE_URL}users/login/`,
+      `${API_BASE_URL}/users/login/`,
       credentials
     );
     const {
@@ -48,12 +47,16 @@ export const login = (credentials) => async (dispatch) => {
       },
     } = response;
     // set access token in local storage
+   
     localStorage.setItem("accessToken", access);
 
     // set refresh token in http only cookie
     document.cookie = `refreshToken=${refresh}; Secure; HttpOnly; SameSite=Strict`;
 
-    dispatch(loginSuccess(access, refresh, credentials.username));
+    dispatch(loginSuccess({ access, refresh, user: credentials.username }));
+
+  
+    
   } catch (error) {
     console.log(error);
   }

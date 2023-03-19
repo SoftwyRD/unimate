@@ -1,17 +1,20 @@
-import React from "react";
+import React, { } from "react";
 import {
   BrowserRouter as Router,
   Routes,
   Route,
+  Navigate,
   BrowserRouter,
 } from "react-router-dom";
-import { Provider } from "react-redux";
+import { Provider,  } from "react-redux";
 import store from "./store";
 import MainPage from "./pages/MainPage";
 import { createGlobalStyle } from "styled-components";
 import SignInPage from "./pages/Login_Register/SignInPage";
 import SignUpPage from "./pages/Login_Register/SignUpPage";
 import Layout from "./components/Layout";
+import ProtectedRoutes from "./components/ProtectedRoutes";
+import Testing from './components/Testing'
 
 const GlobalStyle = createGlobalStyle`
   ${(props) =>
@@ -32,12 +35,15 @@ const GlobalStyle = createGlobalStyle`
 `;
 
 function App() {
+  
   return (
     <Provider store={store}>
       <GlobalStyle useFont={true} />
       <BrowserRouter>
         <Routes>
+          <Route path="/" exact element={<Navigate to="/Login" />} />
           <Route
+            exact
             path="/Login"
             element={
               <Layout>
@@ -45,12 +51,28 @@ function App() {
               </Layout>
             }
           />
-          <Route path="/Register" element={
+          <Route
+            exact
+            path="/Register"
+            element={
               <Layout>
                 <SignUpPage />
               </Layout>
-            } />
-          <Route path="/main" element={<MainPage />} />
+            }
+          />
+
+          <Route path="/main" element={
+          
+          <ProtectedRoutes>
+              <MainPage />
+          </ProtectedRoutes>} />
+          
+          <Route path="/Testing" element={
+          
+          <ProtectedRoutes>
+              <Testing />
+          </ProtectedRoutes>
+         } />
         </Routes>
       </BrowserRouter>
     </Provider>

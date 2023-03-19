@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
-    height: "calc(100vh - 300px)",
+    
   },
   button: {
     textTransform: "uppercase",
