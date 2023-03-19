@@ -20,7 +20,7 @@ function Protected({ children }) {
     };
 
     checkAuth();
-  }, []);
+  }, [accessToken, refreshToken]);
 
   if (isLoading) {
     return (
