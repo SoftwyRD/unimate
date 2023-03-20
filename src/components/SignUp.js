@@ -5,6 +5,7 @@ import * as Yup from "yup";
 import axios from "axios";
 import { makeStyles } from "@material-ui/core/styles";
 import { useNavigate } from "react-router-dom";
+import { API_BASE_URL } from "../utils/config";
 const useStyles = makeStyles({
   signUpContainer: {
     marginTop: "30px",
@@ -50,7 +51,7 @@ const SignUp = () => {
 
   const handleSubmit = async (values, { setSubmitting, setErrors }) => {
     try {
-      await axios.post("https://calendar.softwy.com/api/users/", values);
+      await axios.post(`${API_BASE_URL}/users/`, values);
       alert("Sign up successful!");
       navigate('/Login')
     } catch (error) {
