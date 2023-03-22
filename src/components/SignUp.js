@@ -6,6 +6,7 @@ import axios from "axios";
 import { makeStyles } from "@material-ui/core/styles";
 import { useNavigate } from "react-router-dom";
 import { API_BASE_URL } from "../utils/config";
+import toast, { Toaster } from 'react-hot-toast';
 const useStyles = makeStyles({
   signUpContainer: {
     marginTop: "30px",
@@ -52,10 +53,16 @@ const SignUp = () => {
   const handleSubmit = async (values, { setSubmitting, setErrors }) => {
     try {
       await axios.post(`${API_BASE_URL}/users/`, values);
-      alert("Sign up successful!");
-      navigate('/Login')
+      toast.success('Sign up successful!', { 
+        duration: 2000
+      })
+      setTimeout(() => {
+        navigate("/Login");
+      }, 2000);
     } catch (error) {
-      alert("Error signing up!");
+      toast.error("Error submitting form.", { 
+        duration: 2000
+      })
       setErrors({ submit: "Error submitting form." });
     } finally {
       setSubmitting(false);
@@ -65,13 +72,16 @@ const SignUp = () => {
   return (
     <Grid container justifyContent="center" className={classes.signUpContainer}>
       <Grid item xs={12} md={8} lg={7}>
+      
         <Formik
           initialValues={initialValues}
           validationSchema={SignUpSchema}
           onSubmit={handleSubmit}
         >
           {({ isSubmitting }) => (
+            
             <Form className={classes.formContainer}>
+            <div><Toaster/></div>
               <Grid container spacing={2}>
                 <Grid item xs={12} md={6}>
                   <Field

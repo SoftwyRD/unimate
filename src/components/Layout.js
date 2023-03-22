@@ -11,14 +11,7 @@ const useStyles = makeStyles((theme) => ({
     height: "200px",
     margin: "2rem",
   },
-  line: {
-    height: "2px",
-    background: "black",
-    position: "absolute",
-    bottom: 0,
-    left: 0,
-    borderRadius: "5px",
-  },
+
   container: {
     display: "flex",
     flexDirection: "column",
@@ -47,19 +40,6 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center"
   },
 }));
-
-const lineVariants = {
-  hidden: {
-    width: 0,
-    x: "50%",
-    y: "100%",
-  },
-  visible: {
-    width: "100%",
-    x: 0,
-    y: "100%",
-  },
-};
 
 const Layout = ({ children }) => {
   const classes = useStyles();
@@ -90,13 +70,7 @@ const Layout = ({ children }) => {
           Register
         </Button>
       </ButtonGroup>
-      <motion.div
-        className={classes.line}
-        variants={lineVariants}
-        initial="hidden"
-        animate="visible"
-        transition={{ duration: 0.5 }}
-      />
+      
       {children}
     </Container>
   );

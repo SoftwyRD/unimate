@@ -40,6 +40,7 @@ function App() {
       <GlobalStyle useFont={true} />
       <BrowserRouter>
         <Routes>
+        
           <Route path="/" exact element={<Navigate to="/Login" />} />
           <Route
             exact
