@@ -14,6 +14,9 @@ const authSlice = createSlice({
     updateAccessToken: (state, action) => {
       state.accessToken = action.payload.accessToken;
     },
+    modifyAccessToken: (state) => { 
+      state.accessToken = 1;
+    },
     loginSuccess: (state, action) => {
       const { access, refresh, user } = action.payload;
       state.isLoggedIn = true;
@@ -30,7 +33,7 @@ const authSlice = createSlice({
   },
 });
 
-export const { loginSuccess, logoutSuccess } = authSlice.actions;
+export const { loginSuccess, logoutSuccess, updateAccessToken,modifyAccessToken } = authSlice.actions;
 
 // async action creator to handle login
 export const login = (credentials) => async (dispatch) => {
