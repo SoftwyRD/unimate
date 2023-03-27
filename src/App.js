@@ -1,10 +1,10 @@
 import React from "react";
 import {
-  BrowserRouter as Router,
+  BrowserRouter ,
   Routes,
   Route,
   Navigate,
-  BrowserRouter,
+  
 } from "react-router-dom";
 import { Provider } from "react-redux";
 import store from "./store";

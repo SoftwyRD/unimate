@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
@@ -10,11 +10,14 @@ import Button from "@material-ui/core/Button";
 import Box from "@material-ui/core/Box";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
-import { CircularProgress, IconButton, InputAdornment } from "@material-ui/core";
+import {
+  CircularProgress,
+  IconButton,
+  InputAdornment,
+} from "@material-ui/core";
 import { Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 import store from "../store/index";
-
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -93,7 +96,7 @@ const Login = () => {
   const handleTogglePassword = () => {
     setShowPassword((prevState) => !prevState);
   };
-
+  const {accessToken, refreshToken} = useSelector((state) => state.auth);
   const formik = useFormik({
     initialValues: {
       username: "",
@@ -104,23 +107,22 @@ const Login = () => {
       password: Yup.string().required("Password is required"),
     }),
     onSubmit: async (values, { setSubmitting, setErrors }) => {
-      setIsLoading(true)
+      setIsLoading(true);
       try {
         await dispatch(login(values));
         setSubmitting(false);
         const authState = store.getState().auth;
-        if (authState.isLoggedIn) { 
-          navigate("/main"); 
-        } 
-        else
+        if (authState.isLoggedIn) {
+          navigate("/main");
+        } else
           setShowError(() => {
             return true;
           });
       } catch (error) {
         setSubmitting(false);
         console.error(error);
-      } finally { 
-        setIsLoading(false)
+      } finally {
+        setIsLoading(false);
       }
     },
   });
@@ -179,12 +181,10 @@ const Login = () => {
         color="primary"
         className={classes.submitButton}
         disabled={isLoading}
-        
       >
-         {isLoading ? <CircularProgress size={24} /> : "Login" }
+        {isLoading ? <CircularProgress size={24} /> : "Login"}
       </Button>
 
-        
       {showError && (
         <Typography
           fontFamily="MADE Tommy Soft"
@@ -197,7 +197,6 @@ const Login = () => {
         </Typography>
       )}
 
-        
       <Box mt={2} style={{ marginTop: "20px" }}>
         <Link to="/forgot-password" className={classes.forgotPassword}>
           Forgot password?

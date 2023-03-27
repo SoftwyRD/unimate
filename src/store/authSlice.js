@@ -14,26 +14,26 @@ const authSlice = createSlice({
     updateAccessToken: (state, action) => {
       state.accessToken = action.payload.accessToken;
     },
-    modifyAccessToken: (state) => { 
-      state.accessToken = 1;
-    },
     loginSuccess: (state, action) => {
       const { access, refresh, user } = action.payload;
       state.isLoggedIn = true;
       state.user = user;
       state.accessToken = access;
       state.refreshToken = refresh;
+      localStorage.setItem("isLoggedIn", true);
     },
     logoutSuccess: (state) => {
       state.isLoggedIn = false;
       state.user = null;
       state.accessToken = null;
       state.refreshToken = null;
+      localStorage.removeItem("isLoggedIn");
     },
   },
 });
 
-export const { loginSuccess, logoutSuccess, updateAccessToken,modifyAccessToken } = authSlice.actions;
+export const { loginSuccess, logoutSuccess, updateAccessToken } =
+  authSlice.actions;
 
 // async action creator to handle login
 export const login = (credentials) => async (dispatch) => {
@@ -50,16 +50,12 @@ export const login = (credentials) => async (dispatch) => {
       },
     } = response;
     // set access token in local storage
-   
+
     localStorage.setItem("accessToken", access);
 
     // set refresh token in http only cookie
-    document.cookie = `refreshToken=${refresh}; Secure; HttpOnly; SameSite=Strict`;
-
+    document.cookie = `refreshToken=${refresh}; Secure; HttpOnly; SameSite`;
     dispatch(loginSuccess({ access, refresh, user: credentials.username }));
-
-  
-    
   } catch (error) {
     console.log(error);
   }
@@ -72,11 +68,9 @@ export const logout = () => async (dispatch) => {
     localStorage.removeItem("accessToken"); // remove refresh token from http only cookie
     document.cookie =
       "refreshToken=; Secure; HttpOnly; SameSite=Strict; Expires=Thu, 01 Jan 1970 00:00:00 GMT";
-
     dispatch(logoutSuccess());
   } catch (error) {
     console.log(error);
   }
 };
-
 export default authSlice.reducer;

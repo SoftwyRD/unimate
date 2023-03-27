@@ -3,8 +3,8 @@ import { API_BASE_URL } from "./config";
 import { updateAccessToken } from "../store/authSlice";
 
 export const isAuthenticated = async (accessToken, refreshToken, dispatch) => {
-  if (!accessToken || !refreshToken) {
-    console.log("Some tokens don't exist");
+  if (!accessToken) {
+    console.log("AccessToken don't Exist");
     return false;
   }
 
@@ -14,7 +14,7 @@ export const isAuthenticated = async (accessToken, refreshToken, dispatch) => {
         Authorization: `Bearer ${accessToken}`,
       },
     });
-    console.log("Tokens exist! ")
+    console.log("Tokens exist and is valid! ")
     return true;
   } catch (error) {
     console.log(error);

@@ -23,6 +23,7 @@ const useStyles = makeStyles({
 
 const SignUp = () => {
   const classes = useStyles();
+  
   const navigate = useNavigate();
   const initialValues = {
     first_name: "",
@@ -52,6 +53,7 @@ const SignUp = () => {
 
   const handleSubmit = async (values, { setSubmitting, setErrors }) => {
     try {
+      values.middle_name = values.middle_name === "" ? null : values.middle_name;
       await axios.post(`${API_BASE_URL}/users/`, values);
       toast.success('Sign up successful!', { 
         duration: 2000
