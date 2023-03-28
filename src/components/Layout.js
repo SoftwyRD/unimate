@@ -1,55 +1,69 @@
+import React from "react";
 import { ReactComponent as MySVG } from "../assets/logo.svg";
-import { makeStyles } from "@material-ui/core/styles";
+import { styled } from "@mui/material/styles";
 import { motion } from "framer-motion";
 import { Container } from "@material-ui/core";
 import { Button, ButtonGroup } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
-const useStyles = makeStyles((theme) => ({
-  svg: {
-    width: "250px",
-    height: "200px",
-    margin: "2rem",
-  },
+const ButtonContainer = styled(ButtonGroup)({
+  display: "flex",
+  justifyContent: "center",
+  alignContent: "center",
+  alignItems: "center",
+});
 
-  container: {
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
-    
+const ButtonStyled = styled(Button)(({ theme }) => ({
+  textTransform: "uppercase",
+  padding: "0.5rem 1.5rem",
+  fontFamily: "'MADE Tommy Soft', sans-serif",
+  font: "normal normal normal 20px MADE Tommy Soft",
+  letterSpacing: "0.35px",
+  color: "black",
+  border: "none",
+  backgroundColor: "transparent",
+  position: "relative",
+  overflow: "hidden",
+  "&:after": {
+    content: "''",
+    position: "absolute",
+    left: "0",
+    bottom: "0",
+    height: "2px",
+    width: "100%",
+    background: "#304ffe",
+    transform: "translateX(-100%)",
+    transition: "transform 0.3s ease-in-out",
   },
-  button: {
-    textTransform: "uppercase",
-    padding: "0.5rem 1.5rem",
-    fontFamily: "'MADE Tommy Soft', sans-serif",
-    font: 'normal normal normal 20px MADE Tommy Soft',
-    letterSpacing: "0.35px",
-    color: "black",
-    border: "none",
-    backgroundColor: "transparent",
+  "&.active": {
+    "&:after": {
+      transform: "translateX(0)",
+    },
   },
-  selected: {
+  "&.selected": {
     boxShadow: "0 2px 0 0 #304ffe",
-    border: "none",
-  },
-  buttonContainer: {
-    display: "flex",
-    justifyContent: "center",
-    alignContent: "center",
-    alignItems: "center"
   },
 }));
 
+const ContainerStyled = styled(Container)({
+  display: "flex",
+  flexDirection: "column",
+  justifyContent: "center",
+  alignItems: "center",
+});
+
 const Layout = ({ children }) => {
-  const classes = useStyles();
   const navigate = useNavigate();
-  
+  const [activeButton, setActiveButton] = React.useState(0);
+
+  const handleButtonClick = (index) => {
+    setActiveButton(index);
+  };
+
   return (
-    <Container className={classes.container}>
-      <MySVG className={classes.svg} />
-      <ButtonGroup
-        className={classes.buttonContainer}
+    <ContainerStyled>
+      <MySVG width="250px" height="200px" margin="2rem" />
+      <ButtonContainer
         disableElevation
         component={motion.div}
         initial={{ opacity: 1, y: -50 }}
@@ -57,22 +71,28 @@ const Layout = ({ children }) => {
         exit={{ opacity: 0, y: 50 }}
         transition={{ duration: 0.5 }}
       >
-        <Button
-          className={classes.button}
-          onClick={() => navigate("/Login")}
+        <ButtonStyled
+          className={`${activeButton === 0 ? "active" : ""}`}
+          onClick={() => {
+            navigate("/Login");
+            handleButtonClick(0);
+          }}
         >
           Login
-        </Button>
-        <Button
-          className={`${classes.button} ${classes.selected}`}
-          onClick={() => navigate("/Register")}
+        </ButtonStyled>
+        <ButtonStyled
+          className={`${activeButton === 1 ? "active selected" : ""}`}
+          onClick={() => {
+            navigate("/Register");
+            handleButtonClick(1);
+          }}
         >
           Register
-        </Button>
-      </ButtonGroup>
-      
+        </ButtonStyled>
+      </ButtonContainer>
+
       {children}
-    </Container>
+    </ContainerStyled>
   );
 };
 

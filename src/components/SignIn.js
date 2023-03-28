@@ -43,7 +43,6 @@ const useStyles = makeStyles((theme) => ({
     padding: "10px",
     marginBottom: "16px",
     fontSize: "20px",
-
     color: "#333",
     "&:focus": {
       outline: "none",

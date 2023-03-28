@@ -20,14 +20,14 @@ const authSlice = createSlice({
       state.user = user;
       state.accessToken = access;
       state.refreshToken = refresh;
-      localStorage.setItem("isLoggedIn", true);
+      
     },
     logoutSuccess: (state) => {
       state.isLoggedIn = false;
       state.user = null;
       state.accessToken = null;
       state.refreshToken = null;
-      localStorage.removeItem("isLoggedIn");
+      
     },
   },
 });
