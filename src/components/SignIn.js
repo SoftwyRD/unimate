@@ -95,7 +95,7 @@ const Login = () => {
   const handleTogglePassword = () => {
     setShowPassword((prevState) => !prevState);
   };
-  const {accessToken, refreshToken} = useSelector((state) => state.auth);
+  
   const formik = useFormik({
     initialValues: {
       username: "",
